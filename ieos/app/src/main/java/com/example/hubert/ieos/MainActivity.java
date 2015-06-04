@@ -39,8 +39,9 @@ public class MainActivity extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
 
+    }
+    /*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -54,5 +55,19 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    */
+    @Override
+    public  boolean  onOptionsItemSelected(MenuItem item) {
+        switch  (item.getItemId()) {
+            case  R.id.action_compose:
+                Toast.makeText( this ,  "Compose" , Toast.LENGTH_SHORT).show();
+                return  true ;
+            case  R.id.action_settings:
+                Toast.makeText( this ,  "Settings" , Toast.LENGTH_SHORT).show();
+                return  true ;
+            default :
+                return  super .onOptionsItemSelected(item);
+        }
     }
 }
