@@ -34,6 +34,8 @@ public class TaaDActivity extends Activity {
     private String speechResult;
     public String httpResponseResult;
     private Button btnStreaming;
+    public String webcamturnon = "webcam turn on";
+    public String webcamturnoff = "webcam turn off";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,16 @@ public class TaaDActivity extends Activity {
         String temp = bundle.getString("speechResult");
         txtSpeechResult.setText(temp);
         speechResult = temp;
+        if(temp.equals(webcamturnon)){
+            Intent intent = new Intent();
+            intent.setClass(TaaDActivity.this, StreamingActivity.class);
+            startActivity(intent);
+        }
+        else{
+            Intent intent = new Intent();
+            intent.setClass(TaaDActivity.this, SpeechActivity.class);
+            startActivity(intent);
+        }
     }
 
     private class SendResultTask extends AsyncTask<Object, Integer, Long> {
@@ -126,116 +138,5 @@ public class TaaDActivity extends Activity {
             }
         }
     }
-
-/*
-package com.example.hubert.ieos;
-import android.app.Activity;
-import android.os.Bundle;
-import android.widget.TextView;
-
-
-public class TaaDActivity  extends Activity {
-    private TextView txtSpeechResult;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_taad);
-
-        setupViewComponent();
-        showResult();
-    }
-
-    private void setupViewComponent(){
-        txtSpeechResult = (TextView) findViewById(R.id.txtSpeechResult);
-    }
-
-    private void showResult(){
-        Bundle bundle = getIntent().getExtras();
-        String temp = bundle.getString("speechResult");
-        txtSpeechResult.setText(temp);
-    }
-}
-*/
-/*
-package com.example.hubert.ieos;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import android.app.Activity;
-import android.os.Bundle;
-import android.util.Log;
-import android.os.AsyncTask;
-
-public class TaaDActivity extends Activity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_taad);
-
-        SendResultTask sendResultTask = new SendResultTask();
-        sendResultTask.execute();
-
-    }
-
-    private class SendResultTask extends AsyncTask<Object, Integer, Long>
-    {
-        protected Long doInBackground(Object... abc)
-        {
-            HttpClient httpClient = new DefaultHttpClient();
-            // replace with your url
-            HttpPost httpPost = new HttpPost("http://140.112.42.145:2012/login");
-            //Post Data
-            List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
-            nameValuePair.add(new BasicNameValuePair("account", "abc"));
-            nameValuePair.add(new BasicNameValuePair("password", "123"));
-
-            //Encoding POST data
-            try {
-                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
-            } catch (UnsupportedEncodingException e) {
-                // log exception
-                e.printStackTrace();
-            }
-
-            //making POST request.
-            try {
-                HttpResponse response = httpClient.execute(httpPost);
-                // write response to log
-                Log.d("Http Post Response:", response.toString());
-            } catch (ClientProtocolException e) {
-                // Log exception
-                e.printStackTrace();
-            } catch (IOException e) {
-                // Log exception
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        protected void onProgressUpdate(Integer... progress)
-        {
-
-        }
-
-        protected void onPostExecute(Long result)
-        {
-
-        }
-    }
-}
-*/
 
 
