@@ -38,7 +38,7 @@ public class MainActivity extends ActionBarActivity {
                 MainActivity.this.finish();
             }
         };
-        timer.schedule(tast, 2000);
+        timer.schedule(tast, 1500);
     }
 
         private Button.OnClickListener btnLoginOnClick = new Button.OnClickListener(){

@@ -33,11 +33,8 @@ public class TaaDActivity extends ActionBarActivity {
     private TextView txtSpeechResult;
     private TextView txtServerResult;
     private String speechResult;
-    public String httpResponseResult;
     private Button btnStreaming;
     private Button btnSpeechRecognition;
-    private String webcamturnon = "turn on the webcam";
-    private String webcamturnoff = "turn off the webcam";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,19 +73,10 @@ public class TaaDActivity extends ActionBarActivity {
 
     private void showResult() {
         Bundle bundle = getIntent().getExtras();
-        String temp = bundle.getString("speechResult");
-        txtSpeechResult.setText(temp);
-        speechResult = temp;
-        if(temp.equals(webcamturnon)){
-            Intent intent = new Intent();
-            intent.setClass(TaaDActivity.this, StreamingActivity.class);
-            startActivity(intent);
-        }
-        else{
-            Intent intent = new Intent();
-            intent.setClass(TaaDActivity.this, SpeechActivity.class);
-            startActivity(intent);
-        }
+        String speechresult = bundle.getString("speechresult");
+        String serverresult = bundle.getString("serverresult");
+        txtSpeechResult.setText(speechresult);
+        txtServerResult.setText(serverresult);
     }
     }
 

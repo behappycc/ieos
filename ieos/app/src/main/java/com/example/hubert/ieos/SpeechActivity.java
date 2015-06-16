@@ -46,7 +46,8 @@ public class SpeechActivity extends ActionBarActivity {
     private Button btnSendData;
     private String httpResponseResult;
     private TextView txtSpeechResult;
-
+    private String webcamturnon = "turn on the webcam";
+    private String webcamturnoff = "turn off the webcam";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -153,7 +154,7 @@ public class SpeechActivity extends ActionBarActivity {
                 HttpEntity entity = response.getEntity();
                 String result = EntityUtils.toString(entity);
                 // write response to log
-                Log.d("Http Post Response:", result);
+                Log.d("speech response:", result);
                 //JSON
                 httpResponseResult = new JSONObject(result).getString("msg");
             } catch (ClientProtocolException e) {
@@ -164,7 +165,7 @@ public class SpeechActivity extends ActionBarActivity {
                 e.printStackTrace();
             }
             catch(org.json.JSONException e){
-
+                e.printStackTrace();
             }
             return null;
         }
@@ -177,20 +178,32 @@ public class SpeechActivity extends ActionBarActivity {
         protected void onPostExecute(Long result)
         {
             Log.d("httpResponseResult:", httpResponseResult);
-            if(httpResponseResult.equals("action successful")){
+            Log.d("result:", speechresult);
+            if(speechresult.equals(webcamturnon)){
+                Intent intent = new Intent();
+                intent.setClass(SpeechActivity.this, StreamingActivity.class);
+                startActivity(intent);
+            }
+            else if(speechresult.equals(webcamturnoff)){
+                txtSpeechResult.setText("webcam turn off");
+            }
+            else if(httpResponseResult.equals("action successful")){
                 Intent intent = new Intent();
                 intent.setClass(SpeechActivity.this, TaaDActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("speechresult", speechresult);
+                bundle.putString("serverresult", httpResponseResult);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
             else if(httpResponseResult.equals("action unsuccessful")){
                 txtSpeechResult.setText(httpResponseResult);
             }
             else if(httpResponseResult == null ){
-                //txtSpeechResult.setText(httpResponseResult);
                 txtSpeechResult.setText("error");
             }
             else
-                txtSpeechResult.setText("error");
+                txtSpeechResult.setText(httpResponseResult);
         }
     }
 }
