@@ -21,17 +21,19 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends  ActionBarActivity {
 
     private Button btnLoginServer;
     private EditText edtUsername, edtPassword;
     private TextView txtResult;
+    private ImageView imageUser;
 
     public String httpResponseResult;
     @Override
@@ -40,6 +42,7 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         setupViewComponent();
+        //imageUser.setImageResource(R.drawable.user);
     }
 
     private Button.OnClickListener btnLoginServerOnClick = new Button.OnClickListener(){
@@ -49,11 +52,11 @@ public class LoginActivity extends Activity {
 
             SendResultTask sendResultTask = new SendResultTask(strUsername, strPassword);
             sendResultTask.execute();
-
         }
     };
 
     private void setupViewComponent(){
+       // imageUser = (ImageView) findViewById(R.id.imageUser);
         btnLoginServer = (Button) findViewById(R.id.btnLoginServer);
         edtUsername = (EditText) findViewById(R.id.edtUsername);
         edtPassword = (EditText) findViewById(R.id.edtPassword);
@@ -78,13 +81,14 @@ public class LoginActivity extends Activity {
         {
             HttpClient httpClient = new DefaultHttpClient();
             // replace with your url
-            HttpPost httpPost = new HttpPost("http://140.112.42.145:2012/login");
+            HttpPost httpPost = new HttpPost("http://140.112.42.149:8080/mobelogin");
 
             //Post Data
             List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
-            nameValuePair.add(new BasicNameValuePair("account", username));
+            nameValuePair.add(new BasicNameValuePair("name", username));
             nameValuePair.add(new BasicNameValuePair("password", password));
-
+            Log.d("Http Post Response:", username);
+            Log.d("Http Post Response:", password);
             //Encoding POST data
             try {
                 httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
@@ -100,12 +104,16 @@ public class LoginActivity extends Activity {
                 String result = EntityUtils.toString(entity);
                 // write response to log
                 Log.d("Http Post Response:", result);
+                //JSON
+                httpResponseResult = new JSONObject(result).getString("msg");
             } catch (ClientProtocolException e) {
                 // Log exception
                 e.printStackTrace();
             } catch (IOException e) {
                 // Log exception
                 e.printStackTrace();
+            } catch (org.json.JSONException e){
+
             }
             return null;
         }
@@ -117,10 +125,20 @@ public class LoginActivity extends Activity {
 
         protected void onPostExecute(Long result)
         {
-            if(httpResponseResult == null ){
+            Log.d("httpResponseResult:", httpResponseResult);
+            if(httpResponseResult.equals("login successful")){
                 Intent intent = new Intent();
                 intent.setClass(LoginActivity.this, SpeechActivity.class);
-                startActivity(intent);}
+                startActivity(intent);
+            }
+            else if(httpResponseResult.equals("login unsuccessful")){
+                txtResult.setText("The email and password you entered don't match.");
+            }
+            else if(httpResponseResult == null ){
+                Intent intent = new Intent();
+                intent.setClass(LoginActivity.this, SpeechActivity.class);
+                startActivity(intent);
+            }
             else
                 //txtResult.setText("error");
                 txtResult.setText(httpResponseResult);

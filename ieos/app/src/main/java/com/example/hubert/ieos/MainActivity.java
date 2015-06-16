@@ -8,10 +8,13 @@ import android.view.MenuItem;
 import android.widget.*;
 import android.view.View;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends ActionBarActivity {
 
     private Button btnLogin;
-
+/*
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,8 +22,25 @@ public class MainActivity extends ActionBarActivity {
 
         setupViewComponent();
     }
+*/
+    //wait two second
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_start);
 
-    private Button.OnClickListener btnLoginOnClick = new Button.OnClickListener(){
+        final Intent localIntent = new Intent(this, LoginActivity.class);
+        Timer timer = new Timer();
+        TimerTask tast = new TimerTask() {
+            @Override
+            public void run() {
+                startActivity(localIntent);
+            }
+        };
+        timer.schedule(tast, 2000);
+    }
+
+        private Button.OnClickListener btnLoginOnClick = new Button.OnClickListener(){
         public void onClick(View v){
             Intent intent = new Intent();
             intent.setClass(MainActivity.this, LoginActivity.class);
@@ -41,22 +61,7 @@ public class MainActivity extends ActionBarActivity {
         return true;
 
     }
-    /*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-    */
     @Override
     public  boolean  onOptionsItemSelected(MenuItem item) {
         switch  (item.getItemId()) {

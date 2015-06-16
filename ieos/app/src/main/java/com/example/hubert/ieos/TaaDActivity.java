@@ -2,6 +2,7 @@ package com.example.hubert.ieos;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -28,14 +29,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.os.AsyncTask;
 
-public class TaaDActivity extends Activity {
+public class TaaDActivity extends ActionBarActivity {
     private TextView txtSpeechResult;
     private TextView txtServerResult;
     private String speechResult;
     public String httpResponseResult;
     private Button btnStreaming;
-    public String webcamturnon = "webcam turn on";
-    public String webcamturnoff = "webcam turn off";
+    private Button btnSpeechRecognition;
+    private String webcamturnon = "turn on the webcam";
+    private String webcamturnoff = "turn off the webcam";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +59,22 @@ public class TaaDActivity extends Activity {
         }
     };
 
+    private Button.OnClickListener btnSpeechRecognitionOnClick = new Button.OnClickListener(){
+        public void onClick(View v){
+            Intent intent = new Intent();
+            intent.setClass(TaaDActivity.this, SpeechActivity.class);
+            startActivity(intent);
+        }
+    };
+
     private void setupViewComponent() {
         txtSpeechResult = (TextView) findViewById(R.id.txtSpeechResult);
         txtServerResult = (TextView) findViewById(R.id.txtServerResult);
         btnStreaming = (Button) findViewById(R.id.btnStreaming);
+        btnSpeechRecognition = (Button) findViewById(R.id.btnSpeechRecognition);
 
         btnStreaming.setOnClickListener(btnStreamingOnClick);
+        btnSpeechRecognition.setOnClickListener(btnSpeechRecognitionOnClick);
     }
 
     private void showResult() {

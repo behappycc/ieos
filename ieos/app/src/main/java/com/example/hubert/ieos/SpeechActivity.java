@@ -10,6 +10,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SpeechActivity extends Activity {
+public class SpeechActivity extends ActionBarActivity {
     protected static final int RESULT_SPEECH = 1;
 
     private ImageButton btnSpeak;
