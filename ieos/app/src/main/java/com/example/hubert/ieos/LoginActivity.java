@@ -33,7 +33,6 @@ public class LoginActivity extends  ActionBarActivity {
     private Button btnLoginServer;
     private EditText edtUsername, edtPassword;
     private TextView txtResult;
-    private ImageView imageUser;
 
     public String httpResponseResult;
     @Override
@@ -42,7 +41,6 @@ public class LoginActivity extends  ActionBarActivity {
         setContentView(R.layout.activity_login);
 
         setupViewComponent();
-        //imageUser.setImageResource(R.drawable.user);
     }
 
     private Button.OnClickListener btnLoginServerOnClick = new Button.OnClickListener(){
@@ -56,7 +54,6 @@ public class LoginActivity extends  ActionBarActivity {
     };
 
     private void setupViewComponent(){
-       // imageUser = (ImageView) findViewById(R.id.imageUser);
         btnLoginServer = (Button) findViewById(R.id.btnLoginServer);
         edtUsername = (EditText) findViewById(R.id.edtUsername);
         edtPassword = (EditText) findViewById(R.id.edtPassword);

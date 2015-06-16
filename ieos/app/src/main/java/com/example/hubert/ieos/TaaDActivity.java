@@ -46,9 +46,6 @@ public class TaaDActivity extends ActionBarActivity {
 
         setupViewComponent();
         showResult();
-
-        //SendResultTask sendResultTask = new SendResultTask();
-        //sendResultTask.execute();
     }
 
     private Button.OnClickListener btnStreamingOnClick = new Button.OnClickListener(){
@@ -93,62 +90,6 @@ public class TaaDActivity extends ActionBarActivity {
             startActivity(intent);
         }
     }
-
-    private class SendResultTask extends AsyncTask<Object, Integer, Long> {
-        public SendResultTask(
-
-        ) {
-
-        }
-
-        protected Long doInBackground(Object... abc) {
-            HttpClient httpClient = new DefaultHttpClient();
-            // replace with your url
-            HttpPost httpPost = new HttpPost("http://140.112.42.145:2012/login");
-
-            //Post Data
-            List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(1);
-            nameValuePair.add(new BasicNameValuePair("speechResult", speechResult));
-
-
-            //Encoding POST data
-            try {
-                httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
-            } catch (UnsupportedEncodingException e) {
-                // log exception
-                e.printStackTrace();
-            }
-
-            //making POST request.
-            try {
-                HttpResponse response = httpClient.execute(httpPost);
-                HttpEntity entity = response.getEntity();
-                String result = EntityUtils.toString(entity);
-                // write response to log
-                Log.d("Http Post Response:", result);
-            } catch (ClientProtocolException e) {
-                // Log exception
-                e.printStackTrace();
-            } catch (IOException e) {
-                // Log exception
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        protected void onProgressUpdate(Integer... progress) {
-
-        }
-
-        protected void onPostExecute(Long result) {
-            if (httpResponseResult == null) {
-                //Intent intent = new Intent();
-                //intent.setClass(LoginActivity.this, SpeechActivity.class);
-                //startActivity(intent);
-            }
-
-            }
-        }
     }
 
 

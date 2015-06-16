@@ -35,6 +35,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void run() {
                 startActivity(localIntent);
+                MainActivity.this.finish();
             }
         };
         timer.schedule(tast, 2000);
