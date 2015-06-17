@@ -135,6 +135,10 @@ public class SpeechActivity extends ActionBarActivity {
             HttpClient httpClient = new DefaultHttpClient();
             // replace with your url
             HttpPost httpPost = new HttpPost("http://140.112.42.149:8080/mobevoice");
+            //get sid
+            Bundle bundle = getIntent().getExtras();
+            String cookie = bundle.getString("cookie");
+            Log.d("hicookie", cookie);
 
             //Post Data
             List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(1);
@@ -143,6 +147,7 @@ public class SpeechActivity extends ActionBarActivity {
             //Encoding POST data
             try {
                 httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
+                httpPost.setHeader("cookie", cookie);
             } catch (UnsupportedEncodingException e) {
                 // log exception
                 e.printStackTrace();

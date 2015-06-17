@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.*;
 import android.view.View;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -28,6 +29,9 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.cookie.Cookie;
+
+
 public class LoginActivity extends  ActionBarActivity {
 
     private Button btnLoginServer;
@@ -35,6 +39,8 @@ public class LoginActivity extends  ActionBarActivity {
     private TextView txtResult;
 
     public String httpResponseResult;
+    public String temp1;
+    public String[] cookie;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +104,15 @@ public class LoginActivity extends  ActionBarActivity {
             try {
                 HttpResponse response = httpClient.execute(httpPost);
                 HttpEntity entity = response.getEntity();
+                //get hheader
+                Header[] temp = response.getHeaders("set-cookie");
+
+                for(Header header : temp){
+                    Log.d("Http response header:", header.getValue());
+                    temp1 = header.getValue();
+                }
+                cookie = temp1.split(";");
+                Log.d("split cookie:", cookie[0]);
                 String result = EntityUtils.toString(entity);
                 // write response to log
                 Log.d("Http Post Response:", result);
@@ -122,10 +137,14 @@ public class LoginActivity extends  ActionBarActivity {
 
         protected void onPostExecute(Long result)
         {
+            Bundle bundle = new Bundle();
+            bundle.putString("cookie", temp1);
+
             Log.d("httpResponseResult:", httpResponseResult);
             if(httpResponseResult.equals("login successful")){
                 Intent intent = new Intent();
                 intent.setClass(LoginActivity.this, SpeechActivity.class);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
             else if(httpResponseResult.equals("login unsuccessful")){
@@ -134,6 +153,7 @@ public class LoginActivity extends  ActionBarActivity {
             else if(httpResponseResult == null ){
                 Intent intent = new Intent();
                 intent.setClass(LoginActivity.this, SpeechActivity.class);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
             else
