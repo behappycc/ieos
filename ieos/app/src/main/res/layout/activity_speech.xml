@@ -33,8 +33,13 @@ android:orientation="vertical" >
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
-    <TextView android:id="@+id/txtSpeechResult1"
+    <TextView android:id="@+id/txtSpeech"
         android:text="@string/result"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView android:id="@+id/txtSpeechResult1"
+        android:text="@string/speechresult"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 

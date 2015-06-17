@@ -46,6 +46,7 @@ public class SpeechActivity extends ActionBarActivity {
     private Button btnSendData;
     private String httpResponseResult;
     private TextView txtSpeechResult;
+    private TextView txtSpeech;
     private String webcamturnon = "turn on the webcam";
     private String webcamturnoff = "turn off the webcam";
 
@@ -101,6 +102,7 @@ public class SpeechActivity extends ActionBarActivity {
         btnSendData = (Button) findViewById(R.id.btnSendData);
 
         btnSendData.setOnClickListener(btnSendDataOnClick);
+        txtSpeech = (TextView) findViewById(R.id.txtSpeech);
         txtSpeechResult = (TextView) findViewById(R.id.txtSpeechResult1);
     }
 
@@ -184,24 +186,27 @@ public class SpeechActivity extends ActionBarActivity {
         {
             Log.d("httpResponseResult:", httpResponseResult);
             Log.d("result:", speechresult);
+            txtSpeech.setText(speechresult);
             if(speechresult.equals(webcamturnon)){
                 Intent intent = new Intent();
                 intent.setClass(SpeechActivity.this, StreamingActivity.class);
+                txtSpeechResult.setText("Success");
                 startActivity(intent);
             }
             else if(speechresult.equals(webcamturnoff)){
-                txtSpeechResult.setText("webcam turn off");
+                txtSpeechResult.setText("Success");
             }
-            else if(httpResponseResult.equals("action successful")){
+            else if(httpResponseResult.equals("Success ")){
                 Intent intent = new Intent();
                 intent.setClass(SpeechActivity.this, TaaDActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("speechresult", speechresult);
-                bundle.putString("serverresult", httpResponseResult);
+                bundle.putString("serverresult", httpResponseResult); 
                 intent.putExtras(bundle);
+                txtSpeech.setText(speechresult);
                 startActivity(intent);
             }
-            else if(httpResponseResult.equals("action unsuccessful")){
+            else if(httpResponseResult.equals("Unaccept command")){
                 txtSpeechResult.setText(httpResponseResult);
             }
             else if(httpResponseResult == null ){
