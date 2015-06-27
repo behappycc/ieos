@@ -55,10 +55,6 @@ class CommandHandler(tornado.web.RequestHandler):
                 print '... Television ON'
                 if cur_state['tv'] != True:
                     ret = subprocess.call(["irsend", "SEND_ONCE", "/home/pi/lircd.conf", "KEY_POWER"])
-                    if ret == 0:
-                        print 'Success!!'
-                    else:
-                        print 'Failed'
                     cur_state['tv'] = True
                 else:
                     print 'Television is already ON.'
@@ -67,10 +63,6 @@ class CommandHandler(tornado.web.RequestHandler):
                 print '... Television OFF'
                 if cur_state['tv'] != False:
                     ret = subprocess.call(["irsend", "SEND_ONCE", "/home/pi/lircd.conf", "KEY_POWER"])
-                    if ret == 0:
-                        print 'Success!!'
-                    else:
-                        print 'Failed'
                     cur_state['tv'] = False
                 else:
                     print 'Television is already OFF.'
@@ -83,10 +75,6 @@ class CommandHandler(tornado.web.RequestHandler):
                 print '... Light ON'
                 if cur_state['light'] != True:
                     ret =  GPIO.output(4, 1)
-                    if ret == None:
-                        print 'Success!!'
-                    else:
-                        print 'Failed' 
                     cur_state['light'] = True
                 else:
                     print 'Light is already ON.'
@@ -95,10 +83,6 @@ class CommandHandler(tornado.web.RequestHandler):
                 print '... Light OFF'
                 if cur_state['light'] != False:
                     ret =  GPIO.output(4, 0)
-                    if ret == None:
-                        print 'Success!!'
-                    else:
-                        print 'Failed' 
                     cur_state['light'] = False
                 else:
                     print 'Light is already OFF.'
@@ -162,7 +146,22 @@ class CommandHandler(tornado.web.RequestHandler):
                     print 'Stereo is already OFF'
             print '\n'
 
-
+        elif device == 'all':
+            print '... All OFF'
+            if cur_state['stereo'] == False and cur_state['light'] == False and cur_state['tv'] == False:
+                print 'All devices is OFF'
+            else:
+                if cur_state['stereo'] == True:
+                    pygame.mixer.music.stop()
+                    pygame.mixer.quit()
+                    cur_state['stereo'] = False
+                if cur_state['light'] == True:
+                    ret =  GPIO.output(4, 0)
+                    cur_state['light'] = False
+                if cur_state['tv'] == True:
+                    ret = subprocess.call(["irsend", "SEND_ONCE", "/home/pi/lircd.conf", "KEY_POWER"])
+                    cur_state['tv'] = False
+            print '\n'
 
         # Then u can do something with Command
         # comand = {
